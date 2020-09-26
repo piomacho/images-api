@@ -1,6 +1,9 @@
 {
   "name": "server-app",
   "version": "0.0.0",
+  "engines": {
+    "node": "12.14.1"
+  },
   "scripts": {
     "build": "node ./util/build.js",
     "lint": "tslint --project \"tsconfig.json\"",
