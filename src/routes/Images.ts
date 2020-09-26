@@ -4,9 +4,11 @@ import { DOMParser } from 'xmldom';
 import path from 'path';
 import xml2js from 'xml2js';
 import { findIfFileExistsInFolder } from 'src/common/common';
+import XML from 'pixl-xml';
+import fs from 'fs';
 
 const router = Router();
-const parser = new xml2js.Parser();
+
 
 interface ParsedKMLType {
     kml: {
@@ -28,32 +30,39 @@ router.post('/send-image', async (req: Request, res: Response) => {
         }
 
         const file = req.files.file;
-        if(file) {
 
-            const stringContent = file.data.toString('utf8');
 
-            parser.parseString(stringContent, function (err: string, result: ParsedKMLType) {
-                if(err) {
-                    console.error("Error with string parsing ", err);
-                    return res.status(400).send('Something went wrong');
-                }
-                const imageName = result.kml.GroundOverlay[0].name[0];
+        const stringContent = file.data.toString('utf8');
 
-                const fileDoExists = findIfFileExistsInFolder(imageName, '../images');
+        const jsonParsedResult  = XML.parse( stringContent );
 
-                if(fileDoExists) {
-                    return res.status(200).sendFile(imageName, { root: path.join(__dirname, '../images') });
-                }
-                return res.status(404).send("Requested bitmap was not found on server.");
+        //@ts-ignore
+        const imageName = jsonParsedResult.GroundOverlay.name;
+        try {
+            await fs.readdir(path.join(__dirname, '../images'),
+            (err: NodeJS.ErrnoException | null, files: Array<string>) => {
+               files.forEach(file => {
+                 if(file === imageName) {
+                   return res.status(200).sendFile(imageName, { root: path.join(__dirname, '../images') });
+                 }
+               })
+               return false;
+           })
+
+        } catch (err) {
+            return res.status(404).json({
+                error: err.message,
             });
         }
-        return res.status(400).send('Something went wrong');
+
+
 
     } catch (err) {
         return res.status(404).json({
             error: err.message,
         });
     }
+    // return res.status(400).send('Something went wrong');
 
 });
 

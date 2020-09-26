@@ -19,6 +19,7 @@
   "dependencies": {
     "@types/cors": "^2.8.6",
     "@types/express-fileupload": "^1.1.5",
+    "@types/pixl-xml": "^1.0.1",
     "@types/react-router-dom": "^5.1.3",
     "@types/xml2js": "^0.4.5",
     "@types/xmldom": "^0.1.30",
@@ -34,6 +35,7 @@
     "http-status-codes": "^1.4.0",
     "module-alias": "^2.2.2",
     "morgan": "^1.9.1",
+    "pixl-xml": "^1.0.13",
     "read-xml": "^3.0.0",
     "togeojson": "^0.16.0",
     "winston": "^3.2.1",
