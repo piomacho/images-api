@@ -5,6 +5,7 @@ import logger from 'morgan';
 import path from 'path';
 import BaseRouter from './routes';
 import bodyParser from 'body-parser'
+import fileupload from 'express-fileupload';
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(logger('dev'));
 // app.use(express.json());
 // app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
-
+app.use(fileupload());
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 
