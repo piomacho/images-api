@@ -5,10 +5,10 @@
     "node": "12.14.1"
   },
   "scripts": {
-    "build": "node ./util/build.js",
     "lint": "tslint --project \"tsconfig.json\"",
-    "start": "node -r module-alias/register ./dist",
-    "start:dev": "nodemon --config nodemon.json"
+    "start:dev": "nodemon --config nodemon.json",
+    "build": "rimraf ./build && tsc",
+    "start": "npm run build && node build/index.js"
   },
   "_moduleAliases": {
     "@daos": "dist/daos",
@@ -56,6 +56,7 @@
     "jasmine": "^3.5.0",
     "jsonfile": "^5.0.0",
     "nodemon": "^2.0.2",
+    "rimraf": "^3.0.0",
     "supertest": "^4.0.2",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
