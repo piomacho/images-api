@@ -77,7 +77,7 @@ router.post('/send-image-simple', async (req: Request, res: Response) => {
             (err: NodeJS.ErrnoException | null, files: Array<string>) => {
                files && files.forEach(file => {
                  if(file === `${imageName}.png`) {
-                   return res.status(200).sendFile(imageName, { root: './src/images' });
+                   return res.status(200).sendFile(`${imageName}.png`, { root: './src/images' });
                  }
                })
                return false;
