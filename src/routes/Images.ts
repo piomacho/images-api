@@ -3,13 +3,12 @@ import { DOMParser } from 'xmldom';
 
 import path from 'path';
 import xml2js from 'xml2js';
-import { findIfFileExistsInFolder } from 'src/common/common';
 import XML from 'pixl-xml';
 import fs from 'fs';
 
 const router = Router();
 
-
+    // "start": "npm run build && node build/index.js"
 interface ParsedKMLType {
     kml: {
         GroundOverlay: Array<{
@@ -39,11 +38,11 @@ router.post('/send-image', async (req: Request, res: Response) => {
         //@ts-ignore
         const imageName = jsonParsedResult.GroundOverlay.name;
         try {
-            await fs.readdir(path.join(__dirname, '../images'),
+            await fs.readdir('./src/images',
             (err: NodeJS.ErrnoException | null, files: Array<string>) => {
-               files.forEach(file => {
+               files && files.forEach(file => {
                  if(file === imageName) {
-                   return res.status(200).sendFile(imageName, { root: path.join(__dirname, '../images') });
+                   return res.status(200).sendFile(imageName, { root: './src/images' });
                  }
                })
                return false;
