@@ -70,8 +70,7 @@ router.post('/send-image', async (req: Request, res: Response) => {
 
 router.post('/send-image-simple', async (req: Request, res: Response) => {
     try {
-        const imageName = req.params.imageName;
-
+        const imageName = req.body.imageName;
         try {
             await fs.readdir('./src/images',
             (err: NodeJS.ErrnoException | null, files: Array<string>) => {
