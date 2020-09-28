@@ -65,4 +65,39 @@ router.post('/send-image', async (req: Request, res: Response) => {
 
 });
 
+
+
+
+router.post('/send-image-simple', async (req: Request, res: Response) => {
+    try {
+        const imageName = req.params.imageName;
+
+        try {
+            await fs.readdir('./src/images',
+            (err: NodeJS.ErrnoException | null, files: Array<string>) => {
+               files && files.forEach(file => {
+                 if(file === `${imageName}.png`) {
+                   return res.status(200).sendFile(imageName, { root: './src/images' });
+                 }
+               })
+               return false;
+           })
+
+        } catch (err) {
+            return res.status(404).json({
+                error: err.message,
+            });
+        }
+
+
+
+    } catch (err) {
+        return res.status(404).json({
+            error: err.message,
+        });
+    }
+    // return res.status(400).send('Something went wrong');
+
+});
+
 export default router;
