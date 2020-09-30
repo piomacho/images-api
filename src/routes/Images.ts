@@ -8,7 +8,6 @@ import fs from 'fs';
 
 const router = Router();
 
-    // "start": "npm run build && node build/index.js"
 interface ParsedKMLType {
     kml: {
         GroundOverlay: Array<{
@@ -61,12 +60,39 @@ router.post('/send-image', async (req: Request, res: Response) => {
             error: err.message,
         });
     }
-    // return res.status(400).send('Something went wrong');
 
 });
 
 
+router.get('/get-image/:img_name', async (req: Request, res: Response) => {
+    try {
+        const imageName = req.params.img_name;
+        try {
+            await fs.readdir('./src/images',
+            (err: NodeJS.ErrnoException | null, files: Array<string>) => {
+               files && files.forEach(file => {
+                 if(file === `${imageName}.png`) {
+                   return res.status(200).sendFile(`${imageName}.png`, { root: './src/images' });
+                 }
+               })
+               return false;
+           })
 
+        } catch (err) {
+            return res.status(404).json({
+                error: err.message,
+            });
+        }
+
+
+
+    } catch (err) {
+        return res.status(404).json({
+            error: err.message,
+        });
+    }
+
+});
 
 router.post('/send-image-simple', async (req: Request, res: Response) => {
     try {
@@ -95,7 +121,6 @@ router.post('/send-image-simple', async (req: Request, res: Response) => {
             error: err.message,
         });
     }
-    // return res.status(400).send('Something went wrong');
 
 });
 

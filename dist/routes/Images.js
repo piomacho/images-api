@@ -37,5 +37,55 @@ router.post('/send-image', (req, res) => tslib_1.__awaiter(void 0, void 0, void 
         });
     }
 }));
+router.get('/get-image/:img_name', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const imageName = req.params.img_name;
+        try {
+            yield fs_1.default.readdir('./src/images', (err, files) => {
+                files && files.forEach(file => {
+                    if (file === `${imageName}.png`) {
+                        return res.status(200).sendFile(`${imageName}.png`, { root: './src/images' });
+                    }
+                });
+                return false;
+            });
+        }
+        catch (err) {
+            return res.status(404).json({
+                error: err.message,
+            });
+        }
+    }
+    catch (err) {
+        return res.status(404).json({
+            error: err.message,
+        });
+    }
+}));
+router.post('/send-image-simple', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const imageName = req.body.imageName;
+        try {
+            yield fs_1.default.readdir('./src/images', (err, files) => {
+                files && files.forEach(file => {
+                    if (file === `${imageName}.png`) {
+                        return res.status(200).sendFile(`${imageName}.png`, { root: './src/images' });
+                    }
+                });
+                return false;
+            });
+        }
+        catch (err) {
+            return res.status(404).json({
+                error: err.message,
+            });
+        }
+    }
+    catch (err) {
+        return res.status(404).json({
+            error: err.message,
+        });
+    }
+}));
 exports.default = router;
 //# sourceMappingURL=Images.js.map
