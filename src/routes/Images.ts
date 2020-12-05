@@ -94,6 +94,36 @@ router.get('/get-image/:img_name', async (req: Request, res: Response) => {
 
 });
 
+router.get('/get-kml/:id', async (req: Request, res: Response) => {
+    try {
+        const kmlName = req.params.id;
+        try {
+            await fs.readdir('./src/kml',
+            (err: NodeJS.ErrnoException | null, files: Array<string>) => {
+               files && files.forEach(file => {
+                 if(file === `${kmlName}.kml`) {
+                   return res.status(200).sendFile(`${kmlName}.kml`, { root: './src/kml' });
+                 }
+               })
+               return false;
+           })
+
+        } catch (err) {
+            return res.status(404).json({
+                error: err.message,
+            });
+        }
+
+
+
+    } catch (err) {
+        return res.status(404).json({
+            error: err.message,
+        });
+    }
+
+});
+
 router.post('/send-image-simple', async (req: Request, res: Response) => {
     try {
         const imageName = req.body.imageName;
